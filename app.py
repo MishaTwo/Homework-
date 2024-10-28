@@ -6,22 +6,35 @@ user_list = []
 
 @app.get('/users')
 async def all_user():
+    with open('info.txt', 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            strip_line = line.split()
+            user = {
+                "id": int(strip_line[0]),
+                "name": strip_line[1],
+                "age": int(strip_line[2]),
+            }
+            user_list.append(user)
     return user_list
 
 @app.post('/user')
 async def create_user(id: int, name:str, age:int):
+    with open('info.txt', 'a') as file:
+        file.write(f'{id} {name} {age}\n')
     user = {
-        "id": id,
+        "id":id,
         "name": name,
-        "age": age,
+        "age":age,
     }
     user_list.append(user)
-    return user
 
 @app.get('/users/{id}')
 async def get_user(id: int):
     for user in user_list:
-        if id == user["id"]:
+        if user["id"] == id:
             return user
         else:
-            return "Такого користувача немає!"
+            return {"message": "Такого користувача нема"}
+
+    
