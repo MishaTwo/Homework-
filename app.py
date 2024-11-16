@@ -36,5 +36,3 @@ async def get_user(id: int):
             return user
         else:
             return {"message": "Такого користувача нема"}
-
-    
